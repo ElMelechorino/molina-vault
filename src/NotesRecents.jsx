@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { supabase } from "./supabaseClient";
 
-export default function NotesRecents() {
+export default function NotesRecents({ user }) {
   const [notes, setNotes] = useState([]);
   const [active, setActive] = useState(null);
   const [text, setText] = useState("");
@@ -11,6 +11,7 @@ export default function NotesRecents() {
     const { data } = await supabase
       .from("notes")
       .select("*")
+      .eq("user_id", user.id)
       .order("updated_at", { ascending: false })
       .limit(5);
 

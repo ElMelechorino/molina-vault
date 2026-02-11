@@ -1,13 +1,30 @@
-import { useState } from "react";
-import Login from "./Login";
-import NotesRecents from "./NotesRecents";
+ // crear nueva nota
+ async function newNote() {
+  console.log("Creando nota...");
 
-export default function App() {
-  const [user, setUser] = useState(null);
+  const { data, error } = await supabase
+    .from("notes")
+    .insert([
+      {
+        title: "Nueva nota",
+        content: "",
+        updated_at: new Date(),
+        user_id: user.id,
+      },
+    ])
+    .select()
+    .single();
 
-  if (!user) {
-    return <Login onLogin={setUser} />;
+  if (error) {
+    alert("Error creando nota: " + error.message);
+    console.error(error);
+    return;
   }
 
-  return <NotesRecents />;
+  console.log("Nota creada:", data);
+
+  setActive(data);
+  setText(data.content);
+
+  loadNotes();
 }
