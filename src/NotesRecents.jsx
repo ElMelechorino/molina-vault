@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import { supabase } from "./supabaseClient";
 
 export default function NotesRecents({ user }) {
@@ -89,11 +90,13 @@ export default function NotesRecents({ user }) {
     }, 1000);
 
     return () => clearTimeout(timer);
-  }, [text]);
+  }, [text, active]);
 
+  // cargar notas SOLO cuando el usuario ya exista
   useEffect(() => {
-    loadNotes();
-  }, []);
+    if (user) loadNotes();
+  }, [user]);
+
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>
